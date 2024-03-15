@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-do List</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        .todo-item{
+            border: 1px solid black;
+            padding: 1em 0.75em;
+        }
+
+        .item-mark{
+            color: rgb(16, 191, 57);
+        }
+    </style>
+</head>
+<body>
+    <main class="app">
+        <input type="text" class="todo-input">
+        <button class="todo-btn-add">Add todo</button>
+        <button class="todo-btn-removeAll">Remove all todos</button>
+        <section class="todo-container"></section>
+    </main>
+    <script>
+        const todo_input = $('.todo-input');
+        const todo_container = $('.todo-container');
+
+        // Add todo Button
+        $('.todo-btn-add').on('click',function(){
+            // 沒輸入就忽略
+            if(todo_input.val() === '')
+                return;
+            // Create item 
+            todo_container.append(`
+                <div class="todo-item">
+                    <span class="item-text">${todo_input.val()}</span>
+                    <button  class="item-btn-mark">標記已完成</button>
+                    <button  class="item-btn-delete">刪除</button>
+                </div>
+            `);
+
+            // 清空輸入欄位
+            todo_input.val('');
+        });
+
+        // Remove all todos Button
+        $('.todo-btn-removeAll').on('click',function(){
+            todo_container.empty();
+        });
+
+        // item .mark Button
+        todo_container.on('click', '.item-btn-mark',function(e){
+            if($(e.target).parent().find('.item-text').hasClass('item-mark')){
+                e.target.innerText = '標記已完成';
+            }else{              
+                e.target.innerText = '標記未完成';
+            }
+            $(e.target).parent().find('.item-text').toggleClass('item-mark');
+            console.log("標記");
+        });
+
+        // item .delete Button
+        todo_container.on('click', '.item-btn-delete',function(e){
+            $(e.target).parent().remove();
+            console.log("刪除");
+        });
+
+    </script>
+</body>
+</html>

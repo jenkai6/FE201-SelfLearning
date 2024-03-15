@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-do List</title>
+    <style>
+        .todo-item{
+            border: 1px solid black;
+            padding: 1em 0.75em;
+        }
+
+        .item-mark{
+            color: rgb(16, 191, 57);
+        }
+    </style>
+</head>
+<body>
+    <main class="app">
+        <input type="text" class="todo-input">
+        <button class="todo-btn-add">Add todo</button>
+        <button class="todo-btn-removeAll">Remove all todos</button>
+        <section class="todo-container"></section>
+    </main>
+    <script>
+        const todo_input = document.querySelector('.todo-input');
+        const todo_btn_add =  document.querySelector('.todo-btn-add');
+        const todo_btn_removeAll =  document.querySelector('.todo-btn-removeAll');
+
+        const todo_container = document.querySelector('.todo-container');
+
+        // Add todo Button
+        todo_btn_add.addEventListener('click',function(){
+            // 沒輸入就忽略
+            if(todo_input.value === '')
+                return;
+            // Create item 
+            let item = document.createElement('div');
+            item.classList.add('todo-item');
+            item.innerHTML = `
+                <span class="item-text">${todo_input.value}</span>
+                <button  class="item-btn-mark">標記已完成</button>
+                <button  class="item-btn-delete">刪除</button>
+            `;
+
+            todo_container.appendChild(item);
+
+            // 清空輸入欄位
+            todo_input.value = '';
+        });
+
+        // Remove all todos Button
+        todo_btn_removeAll.addEventListener('click',function(){
+            todo_container.innerHTML = '';
+        });
+
+        // item .mark Button
+        todo_container.addEventListener('click', function(e){
+            if(e.target.classList.contains('item-btn-mark')){
+                if(e.target.parentElement.querySelector('.item-text').classList.contains('item-mark')){
+                    e.target.innerText = '標記已完成';
+                }else{              
+                    e.target.innerText = '標記未完成';
+                }
+                e.target.parentElement.querySelector('.item-text').classList.toggle('item-mark');
+                console.log("標記");
+            }else if(e.target.classList.contains('item-btn-delete')){      
+                todo_container.removeChild(e.target.parentElement);  
+                console.log("刪除");
+            }
+        });
+
+    </script>
+</body>
+</html>
