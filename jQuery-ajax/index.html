@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(() => {
+            // button event
+            $('.input-btn').click(function () {
+                let url = 'https://restcountries.com/v3.1/name/' + $('.input-text').val();          
+                // http request
+                $.ajax({
+                    url: url,
+                    success: (contries) => {
+                        $('.content').empty();
+                        console.log(contries);
+                        for(let country of contries){
+                            let name = country.name.common;             
+                            let nativeName_key = Object.keys(country.name.nativeName)[0];
+                            let nativeName = country.name.nativeName[nativeName_key].official;
+                            $('.content').append(`
+                                <p>${name} ${nativeName}</p>
+                            `);
+                        };                
+                    },
+                    error: () => {
+                        alert('網址錯誤');
+                    }
+                });
+            });
+
+        });
+    </script>
+    <title>AJAX by jQuery</title>
+</head>
+
+<body>
+    <input type="text" class="input-text"><button class="input-btn">送出</button>
+    <main class="content"></main>
+</body>
+
+</html>
